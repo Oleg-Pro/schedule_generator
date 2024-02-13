@@ -15,10 +15,6 @@ class TournamentType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('tournament', EntityType::class, [
-                'class' => TournamentParticipant::class,
-'choice_label' => 'id',
-            ])
         ;
     }
 

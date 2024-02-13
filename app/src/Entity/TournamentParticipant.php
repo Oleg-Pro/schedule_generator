@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TournamentParticipantRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeInterface;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: TournamentParticipantRepository::class)]
 class TournamentParticipant
@@ -70,12 +72,12 @@ class TournamentParticipant
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(DateTime $date): static
     {
         $this->date = $date;
 

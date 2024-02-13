@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Tournament;
+use App\Entity\TournamentParticipant;
 use App\Form\TournamentType;
 use App\Repository\TournamentRepository;
+use App\RoundRobinScheduleGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
+use DateTime;
 
 #[Route('/tournaments')]
 class TournamentController extends AbstractController
@@ -23,7 +27,7 @@ class TournamentController extends AbstractController
     }
 
     #[Route('/new', name: 'app_tournament_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, RoundRobinScheduleGenerator $roundRobinScheduleGenerator): Response
     {
         $tournament = new Tournament();
         $form = $this->createForm(TournamentType::class, $tournament);
@@ -31,6 +35,16 @@ class TournamentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($tournament);
+
+            $tournamentParticipants = $roundRobinScheduleGenerator->generateSchedule($tournament, new DateTime('today midnight'));
+
+            /** @var TournamentParticipant $tournamentParticipant */
+            foreach ($tournamentParticipants as $tournamentParticipant) {
+//                var_dump($tournamentParticipant->getDate());
+//                exit;
+                $entityManager->persist($tournamentParticipant);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_tournament_index', [], Response::HTTP_SEE_OTHER);

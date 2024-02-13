@@ -13,7 +13,7 @@ class Team
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $name = null;
 
     public function getId(): ?int

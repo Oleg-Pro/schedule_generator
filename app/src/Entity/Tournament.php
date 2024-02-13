@@ -13,12 +13,9 @@ class Tournament
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tournament')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TournamentParticipant $tournament = null;
 
     public function getId(): ?int
     {
@@ -33,18 +30,6 @@ class Tournament
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getTournament(): ?TournamentParticipant
-    {
-        return $this->tournament;
-    }
-
-    public function setTournament(?TournamentParticipant $tournament): static
-    {
-        $this->tournament = $tournament;
 
         return $this;
     }
