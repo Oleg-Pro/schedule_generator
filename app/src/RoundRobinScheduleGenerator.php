@@ -22,7 +22,6 @@ class RoundRobinScheduleGenerator
     {
         $teams = $this->teamRepository->findAll();
 
-        $teamsNumber = count($teams);
         $teamIds = array_map(static function(Team $element) {
             return $element->getId();
         }, $teams);
@@ -31,18 +30,21 @@ class RoundRobinScheduleGenerator
             $teamIds[] = null;
         }
 
+        $teamsNumber = count($teamIds);
+
         $tournamentParticipants = [];
 
         $currentDate = clone $startDate;
 
         $halfTeams = $teamsNumber / 2;
-        $matchesNumber = 0;
-
 
         $numberOfMatchesForDate = 0;
 
         for ($i = 0; $i < $teamsNumber - 1; $i++) {
-            for ($j = 0; $j < $teamsNumber/2; $j++) {
+            for ($j = 0; $j < $halfTeams; $j++) {
+                if ($teamIds[$j] === null || $teamIds[$j + $halfTeams] === null) {
+                    continue;
+                }
                 $tournamentParticipant = new TournamentParticipant();
                 $tournamentParticipant->setTournament($tournament)
                                       ->setTeam1($this->em->getReference(Team::class, $teamIds[$j]))

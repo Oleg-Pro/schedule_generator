@@ -31,14 +31,13 @@ class TournamentController extends AbstractController
     #[Route('/{tournamentName}', name: 'app_tournament_matches', methods: ['GET'])]
     public function view(TournamentParticipantRepository $tournamentParticipantRepository, string $tournamentName): Response
     {
-
         return $this->render('tournament/matches.html.twig', [
             'tournamentName' => $tournamentName,
             'tournamentMatchesByDates' => $tournamentParticipantRepository->getTournamentMatchesByDates($tournamentName),
         ]);
     }
 
-    #[Route('/new', name: 'app_tournament_new', methods: ['GET', 'POST'])]
+    #[Route('/add/new', name: 'app_tournament_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, RoundRobinScheduleGenerator $roundRobinScheduleGenerator): Response
     {
         $tournament = new Tournament();
@@ -52,8 +51,6 @@ class TournamentController extends AbstractController
 
             /** @var TournamentParticipant $tournamentParticipant */
             foreach ($tournamentParticipants as $tournamentParticipant) {
-//                var_dump($tournamentParticipant->getDate());
-//                exit;
                 $entityManager->persist($tournamentParticipant);
             }
 
