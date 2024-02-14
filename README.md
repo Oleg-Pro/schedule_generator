@@ -1,13 +1,21 @@
 # schedule_generator
 
-В корне
+В корне проета
 cp .env.dist .env
-задать параметры подключения к БД
+задать параметры подключения к БД в .env
 
-В app задавать DATABASE_URL
+Перейти в папку app
 
-docker-compose exec php /bin/bash
+cp .env .env.local
+
+Поменять DATABASE_URL
+
 docker-compose up -d
 
+docker-compose exec php /bin/bash
+
 php bin/console  make:migration
+
+http://localhost/teams/
+http://localhost/tournaments
 
