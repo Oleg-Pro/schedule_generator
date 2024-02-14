@@ -26,7 +26,7 @@ class TournamentParticipant
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name:"team2_id", referencedColumnName:"id", nullable: false, onDelete:"CASCADE")]
-    private ?team $team2 = null;
+    private ?Team $team2 = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -60,7 +60,7 @@ class TournamentParticipant
         return $this;
     }
 
-    public function getTeam2(): ?team
+    public function getTeam2(): ?Team
     {
         return $this->team2;
     }

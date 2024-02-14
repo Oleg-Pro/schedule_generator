@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournament index{% endblock %}
+
+{% block body %}
+    <h1>Matches of {{ tournamentName }}</h1>
+
+    {% for date, matches in tournamentMatchesByDates %}
+        <div>
+            <h2>{{ date }}</h2>
+          {% for match in matches %}
+              <div>
+                  {{ match['team1'] }} : {{ match['team2'] }}
+              </div>
+          {% endfor %}
+
+
+        </div>
+    {% endfor %}
+
+    <a href="{{ path('app_tournament_index') }}">Tournaments</a>
+    <a href="{{ path('app_team_index') }}">Teams</a>
+{% endblock %}

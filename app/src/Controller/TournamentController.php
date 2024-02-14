@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tournament;
 use App\Entity\TournamentParticipant;
 use App\Form\TournamentType;
+use App\Repository\TournamentParticipantRepository;
 use App\Repository\TournamentRepository;
 use App\RoundRobinScheduleGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +24,17 @@ class TournamentController extends AbstractController
     {
         return $this->render('tournament/index.html.twig', [
             'tournaments' => $tournamentRepository->findAll(),
+        ]);
+    }
+
+
+    #[Route('/{tournamentName}', name: 'app_tournament_matches', methods: ['GET'])]
+    public function view(TournamentParticipantRepository $tournamentParticipantRepository, TournamentRepository $tournamentRepository, string $tournamentName): Response
+    {
+
+        return $this->render('tournament/matches.html.twig', [
+            'tournamentName' => $tournamentName,
+            'tournamentMatchesByDates' => $tournamentParticipantRepository->getTournamentMatchesByDates($tournamentName),
         ]);
     }
 
@@ -56,13 +68,13 @@ class TournamentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_tournament_show', methods: ['GET'])]
-    public function show(Tournament $tournament): Response
-    {
-        return $this->render('tournament/show.html.twig', [
-            'tournament' => $tournament,
-        ]);
-    }
+//    #[Route('/{id}', name: 'app_tournament_show', methods: ['GET'])]
+//    public function show(Tournament $tournament): Response
+//    {
+//        return $this->render('tournament/show.html.twig', [
+//            'tournament' => $tournament,
+//        ]);
+//    }
 
     #[Route('/{id}/edit', name: 'app_tournament_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Tournament $tournament, EntityManagerInterface $entityManager): Response
