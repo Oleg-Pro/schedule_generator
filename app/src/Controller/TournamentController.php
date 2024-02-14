@@ -29,7 +29,7 @@ class TournamentController extends AbstractController
 
 
     #[Route('/{tournamentName}', name: 'app_tournament_matches', methods: ['GET'])]
-    public function view(TournamentParticipantRepository $tournamentParticipantRepository, TournamentRepository $tournamentRepository, string $tournamentName): Response
+    public function view(TournamentParticipantRepository $tournamentParticipantRepository, string $tournamentName): Response
     {
 
         return $this->render('tournament/matches.html.twig', [
